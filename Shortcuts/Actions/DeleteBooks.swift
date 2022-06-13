@@ -6,6 +6,7 @@
 //
 
 import AppIntents
+import UIKit
 
 struct DeleteBooks: AppIntent {
     
@@ -22,7 +23,7 @@ By default you will be prompted for confirmation before the books are deleted fr
     @Parameter(title: "Books", requestValueDialog: IntentDialog("Which books would you like to delete?"))
     var books: [ShortcutsBookEntity]
     
-    @Parameter(title: "Confirm Before Deleting", default: false)
+    @Parameter(title: "Confirm Before Deleting", default: true)
     var confirmBeforeDeleting: Bool
     
     static var parameterSummary: some ParameterSummary {
@@ -42,24 +43,31 @@ By default you will be prompted for confirmation before the books are deleted fr
         
     }
 
-    @MainActor // <-- include if the code needs to be run on the main thread
     func perform() async throws -> some PerformResult {
         do {
-            
             if confirmBeforeDeleting {
-                let bookList = books.map{ "'\($0.title)' by \($0.author)" }
+                let bookList = books.map{ $0.title }
                 let formattedList = bookList.formatted(.list(type: .and, width: .short))
                 // Here we prompt the user for confirmation before performing the deletion. User cancellation will throw an error
-                try await requestConfirmation(output: .finished(dialog: "Are you sure you want to delete \(formattedList)?"))
+                try await requestConfirmation(output: .finished(dialog: "Are you sure you want to delete \(formattedList)?") {
+                    // This 'bookshelf' will visually display the first 4 of the books that are being deleted in the prompt
+                    BookshelfView(images: books.compactMap {
+                        if let imageData = $0.coverImage?.data {
+                            return UIImage(data: imageData)
+                        } else {
+                            return nil
+                        }
+                    })
+                })
                 for book in books {
                     try BookManager.shared.deleteBook(withId: book.id)
                 }
-                return .finished
+                return .finished(dialog: IntentDialog(stringLiteral: (books.count == 1) ? "Book deleted" : "\(books.count) books deleted"))
             } else {
                 for book in books {
                     try BookManager.shared.deleteBook(withId: book.id)
                 }
-                return .finished
+                return .finished(dialog: IntentDialog(stringLiteral: (books.count == 1) ? "Book deleted" : "\(books.count) books deleted"))
             }
         } catch let error {
             throw error

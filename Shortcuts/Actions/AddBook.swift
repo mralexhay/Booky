@@ -21,7 +21,7 @@ Add a new book to your collection.
 
 A preview of the new book is optionally shown as a Snippet after the action has run.
 """, categoryName: "Editing")
-
+    
     // String input options allow you to set the keyboard type, capitalization and more
     @Parameter(title: "Title", inputOptions: StringInputOptions(capitalizationType: .words), requestValueDialog: IntentDialog("What is the title of the book?"))
     var title: String
