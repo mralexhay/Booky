@@ -4,15 +4,15 @@
 
 ### ℹ️ ABOUT
 
-**Booky** is a work-in-progress, heavily-commented demo app built to explore Apple's new [**'App Intents'**](https://developer.apple.com/documentation/appintents/app-intents) framework introduced in iOS16.
+**Booky** is a work-in-progress, heavily-commented demo app built to explore Apple's new '[**App Intents**](https://developer.apple.com/documentation/appintents/app-intents)' framework introduced in iOS 16.
 
-This API lets you extend actions from your app into other areas of the OS - for example the Shortcuts app and through Siri.
+This API lets you extend actions from your app into other areas of the OS - for example the Shortcuts app and Siri.
 
-Functionally, Booky is a basic library you can add books to and mark them as read or unread. It's working code that is conceptually similar to the examples provided in WWDC22's ['Dive Into App Intents'](https://developer.apple.com/videos/play/wwdc2022/10032) session. 
+Functionally, Booky is a basic library you can add books to and mark them as read or unread. It's runnable code that is conceptually and structurally similar to the examples provided in WWDC22's ['Dive Into App Intents'](https://developer.apple.com/videos/play/wwdc2022/10032) session. 
 
-Technically, Booky is built using SwiftUI and persists saved books to a local CoreData store. It has only been tested on iPhone but the code should run on iPad - though the UI hasn't been optimised for it.
+Technically, Booky is built using SwiftUI and persists saved books to a local CoreData store. It has only been tested on iPhone but the code should run on iPad (though the UI hasn't been optimised for it yet).
 
-When you first open the app, 3 dummy books will be added to the library for testing. Please note that the functionality is extremely bare bones - with any sort of testing, error handling or localization all currently absent. Hopefully, however, it's a useful playground to help explore some of what the App Intents framework has to offer. 
+When you first open the app, three dummy books will be added to the library for testing. Please note that the functionality is extremely bare bones. Testing, error handling and localization are all currently absent. Hopefully, however, it'll be a useful playground to help explore some of what the App Intents framework has to offer. 
 
 There are some known issues with the app (see *'Known Issues'* below) - I'll try and iron these out as the betas progress.
 
@@ -32,7 +32,7 @@ Here are some of the things covered by Booky:
 
 ### ⚙️ SHORTCUTS ACTIONS
 
-Booky has five actions ('intents') that it provides to the Shortcuts app:
+Booky has five actions (or 'intents') that it provides to the Shortcuts app:
 
 #### ADD BOOK
 > Add a new book to the library.
@@ -46,42 +46,44 @@ Booky has five actions ('intents') that it provides to the Shortcuts app:
 #### MARK BOOKS AS READ
 > Mark multiple books as either read or unread.
 > 
-> This action has a parameter that accepts an array of a custom Book entitys. When tapped, it populates a dynamic, filterable list of Books that display alongside an image.
+> This action has a parameter that accepts an array of a custom Book entities. When tapped, it populates a dynamic, filterable list of Books that display along with images.
 > 
 > It also demonstrates how to use an enum to create a fixed multiple-choice parameter.   
 
 #### OPEN BOOK
-> Opens the chosen book in the Booky app or opens the root library view.
+> Opens the chosen book in the Booky app or navigates to the root library view.
 > 
-> This action demonstrates how to perform a foreground action from a Shortcuts action. It opens the app and uses the new programmatic navigation API in SwiftUI to jump to a specific detail view or clear the navigation stack.
+> This action demonstrates how to perform a foreground action in your app from Shortcuts. It opens the app and uses the new programmatic navigation API in SwiftUI to either jump to a specific detail view or clear the navigation stack.
 > 
-> It also uses the Switch/Case API in ParameterSummary to display a conditional summary depending on which option is chosen.  
+> It uses the Switch/Case API in [ParameterSummary](https://developer.apple.com/documentation/appintents/parametersummary) to display a conditional summary depending on which option is chosen.  
 
 #### DELETE BOOKS ⚠️
 > Deletes the selected books from the library.
 > 
-> This action demonstrates how to prompt the user with an optional confirmation before deleting the books.
+> This action demonstrates how to prompt the user with an optional confirmation (containing images in a Snippet) before deleting the books.
 > 
-> It uses the ParameterSummary's When/Otherwise API. 
+> It uses the ParameterSummary's [When/Otherwise](https://developer.apple.com/documentation/appintents/parametersummarywhencondition) API. 
 
 #### FIND BOOKS ⚠️
-> New in iOS16, this action is automatically added when you add a custom entity that conforms to EntityPropertyQuery (*Not sure this is actually correct since it currently appears when conforming to EntityStringQuery/EntityQuery too?*). It allows the user to query Booky's database for Books by combinations of properties (for example Books published after the year 2000 that are unread).
+> New in iOS 16, this action is *automatically* added when you add a custom entity with a query that conforms to EntityPropertyQuery (*Not sure this is actually correct since it currently shows when conforming to EntityStringQuery/EntityQuery too?*). 
+> 
+> This action allows the user to query Booky's database for Books using combinations of property queries. For example: `Books published after the year 2000 that are unread`.
 
 ---
 
 ### ✅ REQUIREMENTS
-[iOS16](https://developer.apple.com/download/) & [Xcode 14](https://developer.apple.com/download/applications/) betas
+The [iOS16](https://developer.apple.com/download/) & [Xcode 14](https://developer.apple.com/download/applications/) betas.
 
-If Shortcuts actions aren't showing in the Shortcuts app, make sure xcode-select is pointing to the correct Xcode, as per the [Xcode release notes](https://developer.apple.com/documentation/Xcode-Release-Notes/xcode-14-release-notes) for Dev Beta 1
+If Booky's shortcut actions aren't showing in the Shortcuts app, make sure `xcode-select` is pointing to the correct Xcode, as per the [Xcode release notes](https://developer.apple.com/documentation/Xcode-Release-Notes/xcode-14-release-notes) for Dev Beta 1
 
 ![alt text](https://i.imgur.com/pT3TUP5.png)
 
 ---
 
 ### ⚠️ KNOWN ISSUES
-* The **'Find Books'** action isn't working yet. I don't *think* it should actually even show when there isn't a query that conforms to 'EntityStringQuery', which there currently isn't. I'm working on adding conformance to 'EntityParameterQuery' to get it working properly but having some issues. The display name is also not showing correctly (FB10210421)  
-* When tapping on an action's parameter that accepts a custom ShortcutsBookEntity, the filtering isn't working. The *entities(matching String)* never seems to get called. (FB10213109)
-* The **Delete Books** parameter sumary doesn't show correctly, instead showing as if none has been set. I believe this is an issue with ParameterSummary's When/Otherwise API (FB10208191)
+* The **'Find Books'** action isn't working yet. I don't *think* it should actually even show when there isn't a query that conforms to `EntityStringQuery`, which there currently isn't. I'm working on adding conformance to `EntityParameterQuery` to get it working properly but having some issues. The display name is also not showing correctly (FB10210421)  
+* When tapping on an action's parameter that accepts a custom `ShortcutsBookEntity`, the filtering isn't working. The `entities(matching String)` never seems to get called. (FB10213109)
+* The **Delete Books** parameter sumary doesn't show correctly, instead showing as if none has been set. I believe this is an issue with `ParameterSummary`'s When/Otherwise API (FB10208191)
 * Input options seem to have no effect - for example the Title & Author parameters in the Add Book action should be capitalized by word (FB10200372)
 * The text colour in a Snippet view doesn't show the correct (lighter) colour in dark mode (FB10209882) 
 * Long-pressing a File parameter in the list UI (as opposed to the parameter summary) has no effect, which makes it impossible to select a magic variable (FB10191345)
@@ -89,7 +91,7 @@ If Shortcuts actions aren't showing in the Shortcuts app, make sure xcode-select
 ---
 
 ### 🎓 STILL TO EXPLORE
-* Presenting a list of dynamic options to choose from with [DynamicOptionsProvider](https://developer.apple.com/documentation/appintents/dynamicoptionsprovider)
+* Presenting a list of dynamic options to choose from with [DynamicOptionsProvider](https://developer.apple.com/documentation/appintents/dynamicoptionsprovider) (can now include sectioning)
 * Booky currently uses singletons for CoreData access and ViewModel changes but [it seems](https://twitter.com/mgorbach/status/1534359435916632065?s=21&t=WaiYbv7j0G3ZaDuetIImCw) the better way to access the app's state in the App Intent's 'perform' method is by using dependency injection with [IntentDependency](https://developer.apple.com/documentation/appintents/intentdependency) & [IntentDependencyManager](https://developer.apple.com/documentation/appintents/intentdependencymanager)
 * [PredictableIntent protocol](https://twitter.com/mgorbach/status/1534361073213657089?s=21&t=WaiYbv7j0G3ZaDuetIImCw)
 * [App Shortcuts](https://developer.apple.com/wwdc22/10170) - Shortcuts containing a single action that are automatically added by the developer to the Shortcuts app
