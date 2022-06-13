@@ -32,16 +32,16 @@ Here are some of the things covered by Booky:
 
 ### ⚙️ SHORTCUTS ACTIONS
 
-Booky has five actions ('intents') that it provides to the Shortcuts app.
+Booky has five actions ('intents') that it provides to the Shortcuts app:
 
 #### ADD BOOK
-Add a new book to the library.
-
-This action has properties of various types which support different input options, such as per-word keyboard capitalization.  
-
-It displays a SwiftUI 'Snippet' UI (functionally similar to a Homescreen widget) showing a preview of the new book when it completes successfully.
-
-It also outputs a rich custom 'Book' entity for use in the next action. 
+> Add a new book to the library.
+> 
+> This action has properties of various types which support different input options, such as per-word keyboard capitalization.  
+> 
+> It displays a SwiftUI 'Snippet' UI (functionally similar to a Homescreen widget) showing a preview of the new book when it completes successfully.
+> 
+> It also outputs a rich custom 'Book' entity for use in the next action. 
 
 #### MARK BOOKS AS READ
 Mark multiple books as either read or unread.
