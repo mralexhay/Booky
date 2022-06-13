@@ -44,28 +44,35 @@ Booky has five actions ('intents') that it provides to the Shortcuts app:
 > It also outputs a rich custom 'Book' entity for use in the next action. 
 
 #### MARK BOOKS AS READ
-Mark multiple books as either read or unread.
-
-This action has a parameter that accepts an array of a custom Book entitys. When tapped, it populates a dynamic, filterable list of Books that display alongside an image.
-
-It also demonstrates how to use an enum to create a fixed multiple-choice parameter.   
+> Mark multiple books as either read or unread.
+> 
+> This action has a parameter that accepts an array of a custom Book entitys. When tapped, it populates a dynamic, filterable list of Books that display alongside an image.
+> 
+> It also demonstrates how to use an enum to create a fixed multiple-choice parameter.   
 
 #### OPEN BOOK
-Opens the chosen book in the Booky app or opens the root library view.
-
-This action demonstrates how to perform a foreground action from a Shortcuts action. It opens the app and uses the new programmatic navigation API in SwiftUI to jump to a specific detail view or clear the navigation stack.
-
-It also uses the Switch/Case API in ParameterSummary to display a conditional summary depending on which option is chosen.  
+> Opens the chosen book in the Booky app or opens the root library view.
+> 
+> This action demonstrates how to perform a foreground action from a Shortcuts action. It opens the app and uses the new programmatic navigation API in SwiftUI to jump to a specific detail view or clear the navigation stack.
+> 
+> It also uses the Switch/Case API in ParameterSummary to display a conditional summary depending on which option is chosen.  
 
 #### DELETE BOOKS ⚠️
-Deletes the selected books from the library.
-
-This action demonstrates how to prompt the user with an optional confirmation before deleting the books.
-
-It uses the ParameterSummary's When/Otherwise API. 
+> Deletes the selected books from the library.
+> 
+> This action demonstrates how to prompt the user with an optional confirmation before deleting the books.
+> 
+> It uses the ParameterSummary's When/Otherwise API. 
 
 #### FIND BOOKS ⚠️
-New in iOS16, this action is automatically added when you add a custom entity that conforms to EntityPropertyQuery (*Not sure this is actually correct since it currently appears when conforming to EntityStringQuery/EntityQuery too?*). It allows the user to query Booky's database for Books by combinations of properties (for example Books published after the year 2000 that are unread).
+> New in iOS16, this action is automatically added when you add a custom entity that conforms to EntityPropertyQuery (*Not sure this is actually correct since it currently appears when conforming to EntityStringQuery/EntityQuery too?*). It allows the user to query Booky's database for Books by combinations of properties (for example Books published after the year 2000 that are unread).
+
+---
+
+### ✅ REQUIREMENTS
+[iOS16](https://developer.apple.com/download/) & [Xcode 14](https://developer.apple.com/download/applications/) betas
+‼️ If Shortcuts actions aren't showing in the Shortcuts app, make sure xcode-select is pointing to the correct Xcode, as per the [Xcode release notes](https://developer.apple.com/documentation/Xcode-Release-Notes/xcode-14-release-notes) for Dev Beta 1
+![alt text](https://i.imgur.com/pT3TUP5.png)
 
 ---
 
@@ -95,13 +102,26 @@ New in iOS16, this action is automatically added when you add a custom entity th
 ---
 
 ### 📚 FURTHER READING
-* ['Dive Into App Intents' (WWDC22)](https://developer.apple.com/videos/play/wwdc2022/10032)
-* ['Design App Shortcuts' (WWDC22)](https://developer.apple.com/wwdc22/10169)
-* ['Implement App Shortcuts With App Intents' (WWDC22)](https://developer.apple.com/wwdc22/10170)
-* ['Meet Focus Filters' (WWDC22)'](https://developer.apple.com/wwdc22/10121)
-* ['Design Great Actions For Shortcuts, Siri & Suggestions' (WWDC21)](https://developer.apple.com/wwdc21/10283)
-* [App Intents documentation](https://developer.apple.com/documentation/appintents)
-* [Siri/Shortcuts Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/technologies/siri/introduction/)
-* Apple's [Food Truck](https://developer.apple.com/documentation/swiftui/food_truck_building_a_swiftui_multiplatform_app/) example app. This cross-platform app includes one basic intent that displays a chart in a Snippet. It also implements App Shortcuts.
-* [iOS & iPadOS 16 Beta Release Notes](https://developer.apple.com/documentation/ios-ipados-release-notes/ios-ipados-16-release-notes)
-* [Xcode 14 Beta Release Notes](https://developer.apple.com/documentation/Xcode-Release-Notes/xcode-14-release-notes)
+* **WWDC SESSIONS**
+    * 2022
+        * ['Dive Into App Intents' (WWDC22)](https://developer.apple.com/videos/play/wwdc2022/10032)
+        * ['Design App Shortcuts' (WWDC22)](https://developer.apple.com/wwdc22/10169)
+        * ['Implement App Shortcuts With App Intents' (WWDC22)](https://developer.apple.com/wwdc22/10170)
+        * ['Meet Focus Filters' (WWDC22)'](https://developer.apple.com/wwdc22/10121)
+    * 2021
+        * ['Design Great Actions For Shortcuts, Siri & Suggestions' (WWDC21)](https://developer.apple.com/wwdc21/10283)
+* **DOCUMENTATION**
+    * [App Intents documentation](https://developer.apple.com/documentation/appintents)
+    * [Siri/Shortcuts HIG](https://developer.apple.com/design/human-interface-guidelines/technologies/siri/introduction/)
+* **SAMPLE CODE**
+    * Apple's [Food Truck](https://developer.apple.com/documentation/swiftui/food_truck_building_a_swiftui_multiplatform_app/) example app. This cross-platform app includes one basic intent that displays a chart in a Snippet. It also implements App Shortcuts.
+* **RELEASE NOTES**
+    * [iOS & iPadOS 16 Beta Release Notes](https://developer.apple.com/documentation/ios-ipados-release-notes/ios-ipados-16-release-notes)
+    * [Xcode 14 Beta Release Notes](https://developer.apple.com/documentation/Xcode-Release-Notes/xcode-14-release-notes)
+
+---
+
+### 📨 CONTACT
+Questions, code contributions & contructive feedback welcome. I don't have a clue what I'm doing. 
+
+You can find me on Twitter: [@mralexhay](https://www.twitter.com/mralexhay).
