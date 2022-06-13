@@ -71,7 +71,9 @@ Booky has five actions ('intents') that it provides to the Shortcuts app:
 
 ### ✅ REQUIREMENTS
 [iOS16](https://developer.apple.com/download/) & [Xcode 14](https://developer.apple.com/download/applications/) betas
-‼️ If Shortcuts actions aren't showing in the Shortcuts app, make sure xcode-select is pointing to the correct Xcode, as per the [Xcode release notes](https://developer.apple.com/documentation/Xcode-Release-Notes/xcode-14-release-notes) for Dev Beta 1
+
+If Shortcuts actions aren't showing in the Shortcuts app, make sure xcode-select is pointing to the correct Xcode, as per the [Xcode release notes](https://developer.apple.com/documentation/Xcode-Release-Notes/xcode-14-release-notes) for Dev Beta 1
+
 ![alt text](https://i.imgur.com/pT3TUP5.png)
 
 ---
