@@ -46,7 +46,7 @@ Booky has five actions (or 'intents') that it provides to the Shortcuts app:
 #### MARK BOOKS AS READ
 > Mark multiple books as either read or unread.
 > 
-> This action has a parameter that accepts an array of a custom Book entities. When tapped, it populates a dynamic, filterable list of Books that display along with images.
+> This action has a parameter that accepts an array of a custom Book entities. When tapped, it populates a dynamic, filterable list of Books that display along with images. It is sectioned into a 'read' & 'unread' section using a [DynamicOptionsProvider](https://developer.apple.com/documentation/appintents/dynamicoptionsprovider).
 > 
 > It also demonstrates how to use an enum to create a fixed multiple-choice parameter.   
 
@@ -91,11 +91,11 @@ If Booky's shortcut actions aren't showing in the Shortcuts app, make sure `xcod
 ---
 
 ### 🎓 STILL TO EXPLORE
-* Presenting a list of dynamic options to choose from with [DynamicOptionsProvider](https://developer.apple.com/documentation/appintents/dynamicoptionsprovider) (can now include sectioning)
 * Booky currently uses singletons for CoreData access and ViewModel changes but [it seems](https://twitter.com/mgorbach/status/1534359435916632065?s=21&t=WaiYbv7j0G3ZaDuetIImCw) the better way to access the app's state in the App Intent's 'perform' method is by using dependency injection with [IntentDependency](https://developer.apple.com/documentation/appintents/intentdependency) & [IntentDependencyManager](https://developer.apple.com/documentation/appintents/intentdependencymanager)
 * [PredictableIntent protocol](https://twitter.com/mgorbach/status/1534361073213657089?s=21&t=WaiYbv7j0G3ZaDuetIImCw)
 * [App Shortcuts](https://developer.apple.com/wwdc22/10170) - Shortcuts containing a single action that are automatically added by the developer to the Shortcuts app
-* [Customising donated intents based on on user behaviour & specific sets of parameters](https://twitter.com/mgorbach/status/1534360425269080064?s=21&t=WaiYbv7j0G3ZaDuetIImCw) & [Intent discovery documentation](https://developer.apple.com/documentation/appintents/intent-discovery)
+* [Customising donated intents](https://twitter.com/mgorbach/status/1534360425269080064?s=21&t=WaiYbv7j0G3ZaDuetIImCw) based on user behaviour & specific sets of parameters
+* [Intent discovery](https://developer.apple.com/documentation/appintents/intent-discovery) documentation
 * [Focus Filters](https://developer.apple.com/wwdc22/10121)
 * [Resolvers](https://developer.apple.com/documentation/appintents/resolvers)
 * Live Activity Snippets
