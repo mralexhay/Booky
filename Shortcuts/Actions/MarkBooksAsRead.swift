@@ -39,8 +39,43 @@ struct MarkBooksAsRead: AppIntent {
     var status: BookStatus
     
     // A dynamic lookup parameter that allows multiple selections
-    @Parameter(title: "Books", requestValueDialog: IntentDialog("Which books would you like to edit?"))
+    @Parameter(title: "Books", requestValueDialog: IntentDialog("Which books would you like to edit?"), optionsProvider: BookSectionsOptionsProvider())
     var books: [ShortcutsBookEntity]
+    
+    // Here we section the parameter options list into books that are 'read' and 'unread' by using a DynamicOptionsProvider
+    private struct BookSectionsOptionsProvider: DynamicOptionsProvider {
+        func results() async throws -> DynamicOptionsResult<ShortcutsBookEntity> {
+            
+            let allBooks = BookManager.shared.getAllBooks().map {
+                ShortcutsBookEntity(id: $0.id, title: $0.title, author: $0.author, coverImageData: $0.coverImage, isRead: $0.isRead, datePublished: $0.datePublished)
+            }
+            let readBooks = allBooks.filter{ $0.isRead }
+            let unreadBooks = allBooks.filter{ !$0.isRead }
+            
+            return DynamicOptionsResult {
+                DynamicOptionsSection(
+                    title: "Unread",
+                    items: unreadBooks.map {
+                        DynamicOptionsItem<ShortcutsBookEntity>.init(
+                            $0,
+                            title: LocalizedStringResource(stringLiteral: $0.title),
+                            subtitle: LocalizedStringResource(stringLiteral: $0.author),
+                            image: $0.coverImage == nil ? .init(systemName: "person") : .init(data: $0.coverImage!.data))
+                    }
+                )
+                DynamicOptionsSection(
+                    title: "Read",
+                    items: readBooks.map {
+                        DynamicOptionsItem<ShortcutsBookEntity>.init(
+                            $0,
+                            title: LocalizedStringResource(stringLiteral: $0.title),
+                            subtitle: LocalizedStringResource(stringLiteral: $0.author),
+                            image: $0.coverImage == nil ? .init(systemName: "person") : .init(data: $0.coverImage!.data))
+                    }
+                )
+            }
+        }
+    }
         
     // How the summary will appear in the shortcut action
     static var parameterSummary: some ParameterSummary {
