@@ -23,10 +23,10 @@ A preview of the new book is optionally shown as a Snippet after the action has 
 """, categoryName: "Editing")
     
     // String input options allow you to set the keyboard type, capitalization and more
-    @Parameter(title: "Title", inputOptions: StringInputOptions(capitalizationType: .words), requestValueDialog: IntentDialog("What is the title of the book?"))
+    @Parameter(title: "Title", inputOptions: String.IntentInputOptions(capitalizationType: .words), requestValueDialog: IntentDialog("What is the title of the book?"))
     var title: String
 
-    @Parameter(title: "Author", inputOptions: StringInputOptions(capitalizationType: .words), requestValueDialog: IntentDialog("What is the author of the book's name?"))
+    @Parameter(title: "Author", inputOptions: String.IntentInputOptions(capitalizationType: .words), requestValueDialog: IntentDialog("What is the author of the book's name?"))
     var author: String
     
     // Optionally accept an image to set as the book's cover. We can define the types of files that are accepted
