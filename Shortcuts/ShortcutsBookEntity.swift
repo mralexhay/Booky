@@ -11,8 +11,8 @@ import CoreData
 
 // A structure that defines a book object from Booky in the Shortcuts app
 struct ShortcutsBookEntity: Identifiable, Hashable, Equatable, AppEntity {
-    
-    static var typeDisplayName: LocalizedStringResource = LocalizedStringResource("Book", defaultValue: "Book") 
+  
+    static var typeDisplayRepresentation = TypeDisplayRepresentation(name: "Book")
     typealias DefaultQueryType = IntentsBookQuery
     static var defaultQuery: IntentsBookQuery = IntentsBookQuery()
     
@@ -48,8 +48,6 @@ struct ShortcutsBookEntity: Identifiable, Hashable, Equatable, AppEntity {
         self.datePublished = datePublished ?? Date()
     }
     
-    // Requires the full LocalizedStringResource initializer in Dev Beta 1
-    // https://developer.apple.com/documentation/ios-ipados-release-notes/ios-ipados-16-release-notes
     var displayRepresentation: DisplayRepresentation {
         return DisplayRepresentation(
             title: "\(title)",
