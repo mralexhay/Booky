@@ -80,14 +80,14 @@ If Booky's shortcut actions aren't showing in the Shortcuts app, make sure `xcod
 
 ---
 
-### ⚠️ KNOWN ISSUES (*as of dev beta 2*)
+### ⚠️ KNOWN ISSUES (*as of dev beta 3*)
 * The **'Find Books'** action isn't working yet. 
-* The **Book** entity display name is not showing correctly (FB10210421)  
-* When tapping on an action's parameter that accepts a custom `ShortcutsBookEntity`, the filtering isn't working. The `entities(matching String)` never seems to get called. (FB10213109)
-* The **Delete Books** parameter sumary doesn't show correctly, instead showing as if none has been set. I believe this is an issue with `ParameterSummary`'s When/Otherwise API (FB10208191)
-* Input options seem to have no effect - for example the Title & Author parameters in the Add Book action should be capitalized by word (FB10200372)
-* The text colour in a Snippet view doesn't show the correct (lighter) colour in dark mode (FB10209882) 
-* Long-pressing a File parameter in the list UI (as opposed to the parameter summary) has no effect, which makes it impossible to select a magic variable (FB10191345)
+* ~~Input options seem to have no effect - for example the Title & Author parameters in the Add Book action should be capitalized by word (FB10200372)~~
+* ~~The text colour in a Snippet view doesn't show the correct (lighter) colour in dark mode (FB10209882)~~
+* ~~The **Delete Books** parameter sumary doesn't show correctly, instead showing as if none has been set. I believe this is an issue with `ParameterSummary`'s When/Otherwise API (FB10208191)~~ *This was happening any time I had comments added to the code in the App Intent's ´parameterSummary´ method* 
+* ~~Long-pressing a File parameter in the list UI (as opposed to the parameter summary) has no effect, which makes it impossible to select a magic variable (FB10191345)~~
+* ~~The **Book** entity display name is not showing correctly (FB10210421)~~
+* ~~When tapping on an action's parameter that accepts a custom `ShortcutsBookEntity`, the filtering isn't working. The `entities(matching String)` never seems to get called. (FB10213109)~~
 
 ---
 
