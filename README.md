@@ -81,10 +81,12 @@ If Booky's shortcut actions aren't showing in the Shortcuts app, make sure `xcod
 ---
 
 ### ⚠️ KNOWN ISSUES (*as of dev beta 3*)
-* The **'Find Books'** action isn't working yet. 
+* The **'Find Books'** action isn't working yet.
+* Adding any code comments to the App Intent's `parameterSummary` method causes the summary not to render in Shortcuts 
+* As of dev beta 3, Shortcuts won't show in the Shortcuts app when building as `Release` rather than `Debug` (TestFlight etc). A workaround for this is to explicitly mark all App Intents as `Public`. This is noted under the 'Swift' section of the release notes  
 * ~~Input options seem to have no effect - for example the Title & Author parameters in the Add Book action should be capitalized by word (FB10200372)~~
 * ~~The text colour in a Snippet view doesn't show the correct (lighter) colour in dark mode (FB10209882)~~
-* ~~The **Delete Books** parameter sumary doesn't show correctly, instead showing as if none has been set. I believe this is an issue with `ParameterSummary`'s When/Otherwise API (FB10208191)~~ *This was happening any time I had comments added to the code in the App Intent's ´parameterSummary´ method* 
+* ~~The **Delete Books** parameter sumary doesn't show correctly, instead showing as if none has been set. I believe this is an issue with `ParameterSummary`'s When/Otherwise API (FB10208191)~~
 * ~~Long-pressing a File parameter in the list UI (as opposed to the parameter summary) has no effect, which makes it impossible to select a magic variable (FB10191345)~~
 * ~~The **Book** entity display name is not showing correctly (FB10210421)~~
 * ~~When tapping on an action's parameter that accepts a custom `ShortcutsBookEntity`, the filtering isn't working. The `entities(matching String)` never seems to get called. (FB10213109)~~
