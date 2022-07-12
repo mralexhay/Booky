@@ -20,10 +20,10 @@ By default you will be prompted for confirmation before the books are deleted fr
 """, categoryName: "Editing")
     
     // A dynamic lookup parameter
-    @Parameter(title: "Books", requestValueDialog: IntentDialog("Which books would you like to delete?"))
+    @Parameter(title: "Books", description: "The books to be deleted from the library", requestValueDialog: IntentDialog("Which books would you like to delete?"))
     var books: [ShortcutsBookEntity]
     
-    @Parameter(title: "Confirm Before Deleting", default: true)
+    @Parameter(title: "Confirm Before Deleting", description: "If toggled, you will need to confirm the books will be deleted", default: true)
     var confirmBeforeDeleting: Bool
     
     static var parameterSummary: some ParameterSummary {

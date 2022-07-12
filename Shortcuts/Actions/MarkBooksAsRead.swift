@@ -35,11 +35,11 @@ struct MarkBooksAsRead: AppIntent {
                                                                    searchKeywords: ["complete", "finished"])
     
     // An enum parameter
-    @Parameter(title: "Status", requestValueDialog: IntentDialog("How should the books be marked?"))
+    @Parameter(title: "Status", description: "Can be 'read' or 'unread'", requestValueDialog: IntentDialog("How should the books be marked?"))
     var status: BookStatus
     
     // A dynamic lookup parameter that allows multiple selections
-    @Parameter(title: "Books", requestValueDialog: IntentDialog("Which books would you like to edit?"), optionsProvider: BookSectionsOptionsProvider())
+    @Parameter(title: "Books", description: "The books to mark as read or unread", requestValueDialog: IntentDialog("Which books would you like to edit?"), optionsProvider: BookSectionsOptionsProvider())
     var books: [ShortcutsBookEntity]
     
     // Here we section the parameter options list into books that are 'read' and 'unread' by using a DynamicOptionsProvider

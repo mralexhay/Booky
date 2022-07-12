@@ -22,20 +22,20 @@ A preview of the new book is optionally shown as a Snippet after the action has 
 """, categoryName: "Editing")
     
     // String input options allow you to set the keyboard type, capitalization and more
-    @Parameter(title: "Title", inputOptions: String.IntentInputOptions(capitalizationType: .words), requestValueDialog: IntentDialog("What is the title of the book?"))
+    @Parameter(title: "Title", description: "The title of the new book", inputOptions: String.IntentInputOptions(capitalizationType: .words), requestValueDialog: IntentDialog("What is the title of the book?"))
     var title: String
 
-    @Parameter(title: "Author", inputOptions: String.IntentInputOptions(capitalizationType: .words), requestValueDialog: IntentDialog("What is the author of the book's name?"))
+    @Parameter(title: "Author", description: "The author of the new book's name", inputOptions: String.IntentInputOptions(capitalizationType: .words), requestValueDialog: IntentDialog("What is the author of the book's name?"))
     var author: String
     
     // Optionally accept an image to set as the book's cover. We can define the types of files that are accepted
-    @Parameter(title: "Cover Image", supportedTypeIdentifiers: ["public.image"], requestValueDialog: IntentDialog("What image should be used as the cover of the book?"))
+    @Parameter(title: "Cover Image", description: "An optional image of the book's cover", supportedTypeIdentifiers: ["public.image"], requestValueDialog: IntentDialog("What image should be used as the cover of the book?"))
     var coverImage: IntentFile?
 
-    @Parameter(title: "Read", default: false, requestValueDialog: IntentDialog("Have you read the book?"))
+    @Parameter(title: "Read", description: "Toggle on if you have read the book", default: false, requestValueDialog: IntentDialog("Have you read the book?"))
     var isRead: Bool
     
-    @Parameter(title: "Date Published", requestValueDialog: IntentDialog("What date was the book published?"))
+    @Parameter(title: "Date Published", description: "The date the book was published", requestValueDialog: IntentDialog("What date was the book published?"))
     var datePublished: Date
     
     // How the summary will appear in the shortcut action.

@@ -35,11 +35,11 @@ struct OpenBook: AppIntent {
     static var openAppWhenRun = true
     
     // A dynamic lookup parameter
-    @Parameter(title: "Book", requestValueDialog: IntentDialog("Which book would you like to open?"))
+    @Parameter(title: "Book", description: "The book to open in Booky", requestValueDialog: IntentDialog("Which book would you like to open?"))
     var book: ShortcutsBookEntity
     
     // An enum parameter
-    @Parameter(title: "Navigation", default: .book, requestValueDialog: IntentDialog("What would you like to navigate to?"))
+    @Parameter(title: "Navigation", description: "Choose whether to open a book or navigate to Booky's library", default: .book, requestValueDialog: IntentDialog("What would you like to navigate to?"))
     var navigation: NavigationType
     
     // How the summary will appear in the shortcut action.
