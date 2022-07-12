@@ -13,7 +13,7 @@ enum BookStatus: String, AppEnum {
     case unread
 
     // This will be displayed as the title of the menu shown when picking from the options
-    static var typeDisplayName: LocalizedStringResource = "Status"
+    static var typeDisplayRepresentation = TypeDisplayRepresentation(name: "Status")
     
     // The strings that will be shown for each item in the menu
     static var caseDisplayRepresentations: [BookStatus: DisplayRepresentation] = [
