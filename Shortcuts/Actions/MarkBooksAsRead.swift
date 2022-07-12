@@ -79,7 +79,7 @@ struct MarkBooksAsRead: AppIntent {
         
     // How the summary will appear in the shortcut action
     static var parameterSummary: some ParameterSummary {
-        Summary("Mark \(\.$books) as \(\.$status)")  // Mark {Harry Potter and The Bible} as {Read}
+        Summary("Mark \(\.$books) as \(\.$status)")
     }
         
     @MainActor // <-- include if the code needs to be run on the main thread

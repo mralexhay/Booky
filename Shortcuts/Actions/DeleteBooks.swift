@@ -27,20 +27,15 @@ By default you will be prompted for confirmation before the books are deleted fr
     var confirmBeforeDeleting: Bool
     
     static var parameterSummary: some ParameterSummary {
-        
-        // ⚠️ ParameterSummaries that use the When/Otherwise conditional don't appear to display properly in the Shortcuts on Dev Beta 1 (FB10208191)
         When(\DeleteBooks.$confirmBeforeDeleting, .equalTo, true, {
-            // Delete books WITH confirmation
             Summary("Delete \(\.$books)") {
                 \.$confirmBeforeDeleting
             }
         }, otherwise: {
-            // Delete books WITHOUT confirmation
             Summary("Immediately delete \(\.$books)") {
                 \.$confirmBeforeDeleting
             }
         })
-        
     }
 
     func perform() async throws -> some IntentResult {
