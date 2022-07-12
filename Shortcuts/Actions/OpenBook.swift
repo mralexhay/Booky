@@ -63,7 +63,7 @@ struct OpenBook: AppIntent {
     }
 
     @MainActor // <-- include if the code needs to be run on the main thread
-    func perform() async throws -> some PerformResult {
+    func perform() async throws -> some IntentResult {
         do {
             if navigation == .book {
                 let matchingBook = try BookManager.shared.findBook(withId: book.id)
@@ -71,7 +71,7 @@ struct OpenBook: AppIntent {
             } else {
                 ViewModel.shared.navigateToLibrary()
             }
-        return .finished
+            return .result()
         } catch let error {
             throw error
         }

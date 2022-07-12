@@ -43,13 +43,13 @@ By default you will be prompted for confirmation before the books are deleted fr
         
     }
 
-    func perform() async throws -> some PerformResult {
+    func perform() async throws -> some IntentResult {
         do {
             if confirmBeforeDeleting {
                 let bookList = books.map{ $0.title }
                 let formattedList = bookList.formatted(.list(type: .and, width: .short))
                 // Here we prompt the user for confirmation before performing the deletion. User cancellation will throw an error
-                try await requestConfirmation(output: .finished(dialog: "Are you sure you want to delete \(formattedList)?") {
+                try await requestConfirmation(output: .result(dialog: "Are you sure you want to delete \(formattedList)?") {
                     // This 'bookshelf' will visually display the first 4 of the books that are being deleted in the prompt
                     BookshelfView(images: books.compactMap {
                         if let imageData = $0.coverImage?.data {
@@ -62,12 +62,12 @@ By default you will be prompted for confirmation before the books are deleted fr
                 for book in books {
                     try BookManager.shared.deleteBook(withId: book.id)
                 }
-                return .finished(dialog: IntentDialog(stringLiteral: (books.count == 1) ? "Book deleted" : "\(books.count) books deleted"))
+                return .result(dialog: IntentDialog(stringLiteral: (books.count == 1) ? "Book deleted" : "\(books.count) books deleted"))
             } else {
                 for book in books {
                     try BookManager.shared.deleteBook(withId: book.id)
                 }
-                return .finished(dialog: IntentDialog(stringLiteral: (books.count == 1) ? "Book deleted" : "\(books.count) books deleted"))
+                return .result(dialog: IntentDialog(stringLiteral: (books.count == 1) ? "Book deleted" : "\(books.count) books deleted"))
             }
         } catch let error {
             throw error

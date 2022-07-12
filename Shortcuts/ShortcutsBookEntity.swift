@@ -7,9 +7,15 @@
 
 import Foundation
 import AppIntents
+import CoreData
 
 // A structure that defines a book object from Booky in the Shortcuts app
-struct ShortcutsBookEntity: Identifiable, AppEntity {
+struct ShortcutsBookEntity: Identifiable, Hashable, Equatable, AppEntity {
+    
+    static var typeDisplayName: LocalizedStringResource = LocalizedStringResource("Book", defaultValue: "Book") 
+    typealias DefaultQueryType = IntentsBookQuery
+    static var defaultQuery: IntentsBookQuery = IntentsBookQuery()
+    
     var id: UUID
     
     @Property(title: "Title")
@@ -42,90 +48,32 @@ struct ShortcutsBookEntity: Identifiable, AppEntity {
         self.datePublished = datePublished ?? Date()
     }
     
-    static var typeDisplayName: LocalizedStringResource = "Book"
-    static var defaultQuery = IntentsBookQuery()
-    
     // Requires the full LocalizedStringResource initializer in Dev Beta 1
     // https://developer.apple.com/documentation/ios-ipados-release-notes/ios-ipados-16-release-notes
     var displayRepresentation: DisplayRepresentation {
-        if let coverImage {
-            // Use the cover image as a thumbnail in UI lists if it has one
-            return DisplayRepresentation(
-                title: LocalizedStringResource(stringLiteral: "\(title)"),
-                subtitle: LocalizedStringResource(stringLiteral: "\(author)"),
-                image: .init(data: coverImage.data)
-            )
-        } else {
-            // If the book doesn't have a cover image, use a generic SF Symbol instead
-            return DisplayRepresentation(
-                title: LocalizedStringResource(stringLiteral: "\(title)"),
-                subtitle: LocalizedStringResource(stringLiteral: "\(author)"),
-                image: .init(systemName: "book.closed")
-            )
-        }
+        return DisplayRepresentation(
+            title: "\(title)",
+            subtitle: "\(author)",
+            image: coverImage == nil ? .init(systemName: "book.closed") : .init(data: coverImage!.data)
+        )
     }
 }
 
-// Allow Shortcuts to query Booky's database for Books
-struct IntentsBookQuery: EntityStringQuery {
+extension ShortcutsBookEntity {
     
-    // Find books by ID
-    // For example a user may have chosen a book from a list when tapping on a parameter that accepts Books. The ID of that book is now hardcoded into the Shortcut. When the shortcut is run, the ID will be matched against the database in Booky
-    func entities(for identifiers: [UUID]) async throws -> [ShortcutsBookEntity] {
-        return identifiers.compactMap { identifier in
-                if let match = try? BookManager.shared.findBook(withId: identifier) {
-                    return ShortcutsBookEntity(
-                        id: match.id,
-                        title: match.title,
-                        author: match.author,
-                        coverImageData: match.coverImage,
-                        isRead: match.isRead,
-                        datePublished: match.datePublished)
-                } else {
-                    return nil
-                }
-        }
+    // Hashable conformance
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
     
-    // Find books matching the given query.
-    // When the user taps a parameter that accepts Books and types into the search bar at the top, this is where the results are populated from
-    func entities(matching query: String) async throws -> [ShortcutsBookEntity] {
-        
-        // Allows the user to filter the list of Books by title or author
-        let allBooks = BookManager.shared.getAllBooks()
-        let matchingBooks = allBooks.filter {
-            return ($0.title.localizedCaseInsensitiveContains(query) || $0.author.localizedCaseInsensitiveContains(query))
-        }
-
-        return matchingBooks.map {
-            ShortcutsBookEntity(
-                id: $0.id,
-                title: $0.title,
-                author: $0.author,
-                coverImageData: $0.coverImage,
-                isRead: $0.isRead,
-                datePublished: $0.datePublished)
-        }
+    // Equtable conformance
+    static func ==(lhs: ShortcutsBookEntity, rhs: ShortcutsBookEntity) -> Bool {
+        return lhs.id == rhs.id
     }
-     
-    // Returns all Books in the Booky database. This is what populates the list when you tap on a parameter that accepts a Book
-    func suggestedEntities() async throws -> [ShortcutsBookEntity] {
-        let allBooks = BookManager.shared.getAllBooks()
-        return allBooks.map {
-            ShortcutsBookEntity(
-                id: $0.id,
-                title: $0.title,
-                author: $0.author,
-                coverImageData: $0.coverImage,
-                isRead: $0.isRead,
-                datePublished: $0.datePublished)
-        }
-    }
+    
 }
 
-// Working to implement conformance to EntityPropertyQuery
-/*
-// Allow Shortcuts to query Booky's database for Books
+
 struct IntentsBookQuery: EntityPropertyQuery {
 
     // Find books by ID
@@ -161,10 +109,9 @@ struct IntentsBookQuery: EntityPropertyQuery {
     }
     
     // Find books matching the given query.
-    // When the user taps a parameter that accepts Books and types into the search bar at the top, this is where the results are populated from
     func entities(matching query: String) async throws -> [ShortcutsBookEntity] {
         
-        // Allows the user to filter the list of Books by title or author
+        // Allows the user to filter the list of Books by title or author when tapping on a param that accepts a 'Book'
         let allBooks = BookManager.shared.getAllBooks()
         let matchingBooks = allBooks.filter {
             return ($0.title.localizedCaseInsensitiveContains(query) || $0.author.localizedCaseInsensitiveContains(query))
@@ -181,16 +128,17 @@ struct IntentsBookQuery: EntityPropertyQuery {
         }
     }
          
-    static var properties = EntityQueryProperties {
-        Property(keyPath: \ShortcutsBookEntity.title) {
+    static var properties = EntityQueryProperties<ShortcutsBookEntity, NSPredicate> {
+        Property(\ShortcutsBookEntity.$title) {
             EqualToComparator { NSPredicate(format: "title = %@", $0) }
             ContainsComparator { NSPredicate(format: "title CONTAINS %@", $0) }
+
         }
-        Property(keyPath: \ShortcutsBookEntity.author) {
+        Property(\ShortcutsBookEntity.$author) {
             EqualToComparator { NSPredicate(format: "author = %@", $0) }
             ContainsComparator { NSPredicate(format: "author CONTAINS %@", $0) }
         }
-        Property(keyPath: \ShortcutsBookEntity.datePublished) {
+        Property(\ShortcutsBookEntity.$datePublished) {
             LessThanComparator { NSPredicate(format: "datePublished < %@", $0 as NSDate) }
             GreaterThanComparator { NSPredicate(format: "datePublished > %@", $0 as NSDate) }
         }
@@ -208,8 +156,80 @@ struct IntentsBookQuery: EntityPropertyQuery {
         sortedBy: [Sort<ShortcutsBookEntity>],
         limit: Int?
     ) async throws -> [ShortcutsBookEntity] {
-        // Return matching books
-        return []
+        print("Fetching books")
+        let context = PersistenceController.shared.container.viewContext
+        let request: NSFetchRequest<BookEntity> = BookEntity.fetchRequest()
+        let predicate = NSCompoundPredicate(type: mode == .and ? .and : .or, subpredicates: comparators)
+        request.fetchLimit = limit ?? 5
+        request.predicate = predicate
+//        request.sortDescriptors = sortedBy.map({
+//            NSSortDescriptor(key: $0.by, ascending: $0.order == .ascending)
+//        })
+        let matchingBooks = try context.fetch(request)
+        return matchingBooks.map {
+            ShortcutsBookEntity(id: $0.id, title: $0.title, author: $0.author, coverImageData: $0.coverImage, isRead: $0.isRead, datePublished: $0.datePublished)
+        }
     }
 }
-*/
+
+
+
+/*
+// Used if not providing an advanced filtering action?
+// Allow Shortcuts to query Booky's database for Books
+struct IntentsBookQuery: EntityPropertyQuery {
+    
+    // Find books by ID
+    // For example a user may have chosen a book from a list when tapping on a parameter that accepts Books. The ID of that book is now hardcoded into the Shortcut. When the shortcut is run, the ID will be matched against the database in Booky
+    func entities(for identifiers: [UUID]) async throws -> [ShortcutsBookEntity] {
+        return identifiers.compactMap { identifier in
+                if let match = try? BookManager.shared.findBook(withId: identifier) {
+                    return ShortcutsBookEntity(
+                        id: match.id,
+                        title: match.title,
+                        author: match.author,
+                        coverImageData: match.coverImage,
+                        isRead: match.isRead,
+                        datePublished: match.datePublished)
+                } else {
+                    return nil
+                }
+        }
+    }
+    
+    // Find books matching the given query.
+    // When the user taps a parameter that accepts Books and types into the search bar at the top, this is where the results are populated from
+    func entities(matching query: String) async throws -> [ShortcutsBookEntity] {
+        print("Finding books containing '\(query)'")
+        // Allows the user to filter the list of Books by title or author
+        let allBooks = BookManager.shared.getAllBooks()
+        let matchingBooks = allBooks.filter {
+            return ($0.title.localizedCaseInsensitiveContains(query) || $0.author.localizedCaseInsensitiveContains(query))
+        }
+
+        return matchingBooks.map {
+            ShortcutsBookEntity(
+                id: $0.id,
+                title: $0.title,
+                author: $0.author,
+                coverImageData: $0.coverImage,
+                isRead: $0.isRead,
+                datePublished: $0.datePublished)
+        }
+    }
+     
+    // Returns all Books in the Booky database. This is what populates the list when you tap on a parameter that accepts a Book
+    func suggestedEntities() async throws -> [ShortcutsBookEntity] {
+        let allBooks = BookManager.shared.getAllBooks()
+        return allBooks.map {
+            ShortcutsBookEntity(
+                id: $0.id,
+                title: $0.title,
+                author: $0.author,
+                coverImageData: $0.coverImage,
+                isRead: $0.isRead,
+                datePublished: $0.datePublished)
+        }
+    }
+}
+ */

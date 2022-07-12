@@ -80,8 +80,9 @@ If Booky's shortcut actions aren't showing in the Shortcuts app, make sure `xcod
 
 ---
 
-### ⚠️ KNOWN ISSUES
-* The **'Find Books'** action isn't working yet. I don't *think* it should actually even show when there isn't a query that conforms to `EntityStringQuery`, which there currently isn't. I'm working on adding conformance to `EntityParameterQuery` to get it working properly but having some issues. The display name is also not showing correctly (FB10210421)  
+### ⚠️ KNOWN ISSUES (*as of dev beta 2*)
+* The **'Find Books'** action isn't working yet. 
+* The **Book** entity display name is not showing correctly (FB10210421)  
 * When tapping on an action's parameter that accepts a custom `ShortcutsBookEntity`, the filtering isn't working. The `entities(matching String)` never seems to get called. (FB10213109)
 * The **Delete Books** parameter sumary doesn't show correctly, instead showing as if none has been set. I believe this is an issue with `ParameterSummary`'s When/Otherwise API (FB10208191)
 * Input options seem to have no effect - for example the Title & Author parameters in the Add Book action should be capitalized by word (FB10200372)

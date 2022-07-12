@@ -44,7 +44,7 @@ struct MarkBooksAsRead: AppIntent {
     
     // Here we section the parameter options list into books that are 'read' and 'unread' by using a DynamicOptionsProvider
     private struct BookSectionsOptionsProvider: DynamicOptionsProvider {
-        func results() async throws -> DynamicOptionsResult<ShortcutsBookEntity> {
+        func results() async throws -> ItemCollection<ShortcutsBookEntity> {
             
             let allBooks = BookManager.shared.getAllBooks().map {
                 ShortcutsBookEntity(id: $0.id, title: $0.title, author: $0.author, coverImageData: $0.coverImage, isRead: $0.isRead, datePublished: $0.datePublished)
@@ -52,21 +52,21 @@ struct MarkBooksAsRead: AppIntent {
             let readBooks = allBooks.filter{ $0.isRead }
             let unreadBooks = allBooks.filter{ !$0.isRead }
             
-            return DynamicOptionsResult {
-                DynamicOptionsSection(
+            return ItemCollection {
+                ItemSection(
                     title: "Unread",
                     items: unreadBooks.map {
-                        DynamicOptionsItem<ShortcutsBookEntity>.init(
+                        IntentItem<ShortcutsBookEntity>.init(
                             $0,
                             title: LocalizedStringResource(stringLiteral: $0.title),
                             subtitle: LocalizedStringResource(stringLiteral: $0.author),
                             image: $0.coverImage == nil ? .init(systemName: "person") : .init(data: $0.coverImage!.data))
                     }
                 )
-                DynamicOptionsSection(
+                ItemSection(
                     title: "Read",
                     items: readBooks.map {
-                        DynamicOptionsItem<ShortcutsBookEntity>.init(
+                        IntentItem<ShortcutsBookEntity>.init(
                             $0,
                             title: LocalizedStringResource(stringLiteral: $0.title),
                             subtitle: LocalizedStringResource(stringLiteral: $0.author),
@@ -83,12 +83,12 @@ struct MarkBooksAsRead: AppIntent {
     }
         
     @MainActor // <-- include if the code needs to be run on the main thread
-    func perform() async throws -> some PerformResult {
+    func perform() async throws -> some IntentResult {
         
         // Code here is executed when the shortcut action is run
         for book in books {
             try BookManager.shared.markBook(withId: book.id, as: status)
         }
-        return .finished
+        return .result()
     }
 }

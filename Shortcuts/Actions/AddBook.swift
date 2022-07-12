@@ -9,7 +9,6 @@ import AppIntents
 import SwiftUI
 
 struct AddBook: AppIntent {
-    
     // The name of the action in Shortcuts
     static var title: LocalizedStringResource = "Add Book"
     
@@ -49,7 +48,7 @@ A preview of the new book is optionally shown as a Snippet after the action has 
     }
 
     @MainActor // <-- include if the code needs to be run on the main thread
-    func perform() async throws -> some PerformResult {
+    func perform() async throws -> some IntentResult<ShortcutsBookEntity> {
         
         var image: UIImage? = nil
         if let imageData = coverImage?.data {
@@ -62,7 +61,7 @@ A preview of the new book is optionally shown as a Snippet after the action has 
             // Passing a book entity as output from the action. This could be used as input in another action, such at the 'Mark Book As Read' or 'Open Book' actions
             let entity = ShortcutsBookEntity(id: newBook.id, title: newBook.title, author: newBook.author, coverImageData: newBook.coverImage, isRead: newBook.isRead, datePublished: newBook.datePublished)
 
-            return .finished(value: entity) { // <-- we output the 'Book' to be used in the next shortcut action
+            return .result(value: entity) { // <-- we output the 'Book' to be used in the next shortcut action
                 
                 // Including a trailing closure with a SwiftUI view adds a 'Show When Run' button to the Shortcut action
                 // If this is toggled, the view will be shown as a 'Snippet' then the result is output
