@@ -48,7 +48,7 @@ A preview of the new book is optionally shown as a Snippet after the action has 
     }
 
     @MainActor // <-- include if the code needs to be run on the main thread
-    func perform() async throws -> some IntentResult<ShortcutsBookEntity> {
+    func perform() async throws -> some ReturnsValue<ShortcutsBookEntity> {
         
         var image: UIImage? = nil
         if let imageData = coverImage?.data {
