@@ -19,6 +19,9 @@ struct BookyApp: App {
                 .environment(\.managedObjectContext, context)
                 .environmentObject(viewModel)
                 .onAppear {
+                    // Updates available books for shortcuts.
+                    // Should also be ran on change of books, on context save?
+                    ShortcutsBookProvider.updateAppShortcutParameters()
                     if isFirstRun {
                         // Adds 3 dummy books to the library on first run
                         do {
